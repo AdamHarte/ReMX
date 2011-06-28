@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>04 - Screen and Widget</title>
+		<style>
+			html {
+				margin: 0;
+				padding: 0;
+				height: 100%;
+				overflow: hidden;
+				background: #181818;
+			}
+			body {
+				top: 50%;
+				margin: 0;
+				padding: 0;
+				position: relative;
+			}
+			object {
+				top: -250px;
+				width: 640px;
+				height: 480px;
+				margin: 0 auto;
+				border: 10px #101010 solid;
+				display: block;
+				position: relative;
+			}
+		</style>
+	</head>
+	<body>
+		<object data="bin/Demo.swf" type="application/x-shockwave-flash">
+			<param name="base" value="bin/"/>
+			<param name="movie" value="bin/Demo.swf"/>
+			<param name="wmode" value="direct"/>
+			<param name="bgcolor" value="#000000"/>
+		</object>
+	</body>
+</html>

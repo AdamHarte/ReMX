@@ -315,15 +315,15 @@ package remx
 
 			initialized = true;
 
-			if( config.primaryResourceID != null )
+			if( config.hasMainResource )
 			{
 				resource.onLoadComplete = onResourceLoadComplete;
 				resource.onLoadProgress = onResourceLoadProgress;
-				resource.load( config.primaryResourceID );
+				resource.load( "main" );
 				return;
 			}
 
-			setScreen( config.primaryScreenID );
+			setScreen( "main" );
 		}
 
 		/**
@@ -555,7 +555,7 @@ package remx
 			resource.onLoadComplete = null;
 			resource.onLoadProgress = null;
 
-			setScreen( config.primaryScreenID );
+			setScreen( "main" );
 		}
 
 		/**

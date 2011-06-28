@@ -27,11 +27,11 @@ package remx
 		//
 		//------------------------------------------------------------------------------------------
 
-		internal var primaryScreenID:String   = null;
-		internal var primaryResourceID:String = null;
+		internal var hasMainScreen:Boolean   = false;
+		internal var hasMainResource:Boolean = false;
 
-		internal var screenClasses:Dictionary = new Dictionary();
-		internal var resourcePaths:Dictionary = new Dictionary();
+		internal var screenClasses:Dictionary   = new Dictionary();
+		internal var descriptorPaths:Dictionary = new Dictionary();
 
 		//------------------------------------------------------------------------------------------
 		//
@@ -52,11 +52,16 @@ package remx
 
 		/**
 		 */
-		public function registerScreen( screenID:String, screenClass:Class, primary:Boolean=false ):void
+		public function registerScreen( screenID:String, screenClass:Class ):void
 		{
-			if( primary )
+			if( screenClasses[screenID] != null )
 			{
-				primaryScreenID = screenID;
+				throw new Exception( "Parameter 'screenID' must be a unique screen identifier" );
+			}
+
+			if( screenID == "main" )
+			{
+				hasMainScreen = true;
 			}
 
 			screenClasses[screenID] = screenClass;
@@ -64,14 +69,19 @@ package remx
 
 		/**
 		 */
-		public function registerResource( resourceID:String, resourcePath:String, primary:Boolean=false ):void
+		public function registerResourcePackage( packageID:String, descriptorPath:String ):void
 		{
-			if( primary )
+			if( descriptorPaths[packageID] != null )
 			{
-				primaryResourceID = resourceID;
+				throw new Exception( "Parameter 'packageID' must be a unique resource package identifier" );
 			}
 
-			resourcePaths[resourceID] = resourcePath.replace( /^\/{1,}/, "" );
+			if( packageID == "main" )
+			{
+				hasMainResource = true;
+			}
+
+			descriptorPaths[packageID] = descriptorPath.replace( /^\/{1,}/, "" );
 		}
 
 	}// EOC

@@ -266,11 +266,11 @@ package remx
 
 				j = mesh.indexCount;
 
-				mesh.indexList[j++] = i - 4;
-				mesh.indexList[j++] = i - 3;
+				mesh.indexList[j++] = i - 1;
 				mesh.indexList[j++] = i - 2;
 				mesh.indexList[j++] = i - 3;
-				mesh.indexList[j++] = i - 1;
+				mesh.indexList[j++] = i - 4;
+				mesh.indexList[j++] = i - 3;
 				mesh.indexList[j++] = i - 2;
 
 				mesh.indexCount = j;

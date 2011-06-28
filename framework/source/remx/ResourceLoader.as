@@ -523,7 +523,7 @@ package remx
 		{
 			for each( var attribute:String in attributes )
 			{
-				if( element.attribute( attribute ).hasSimpleContent() == false )
+				if( element.attribute( attribute ).length() != 0 == false )
 				{
 					throw new Exception( ERR_ATTRIBUTE_REQUIRED, element.name(), attribute );
 				}
@@ -605,7 +605,7 @@ package remx
 			fontTracking = 0.0;
 			fontLeading  = 0.0;
 
-			if( element.attribute( TRACKING ).hasSimpleContent() )
+			if( element.attribute( TRACKING ).length() != 0 )
 			{
 				fontTracking = element.attribute( TRACKING );
 
@@ -615,7 +615,7 @@ package remx
 				}
 			}
 
-			if( element.attribute( LEADING ).hasSimpleContent() )
+			if( element.attribute( LEADING ).length() != 0 )
 			{
 				fontLeading = element.attribute( LEADING );
 
@@ -705,7 +705,7 @@ package remx
 
 			musicRepeated = false;
 
-			if( element.attribute( REPEATED ).hasSimpleContent() )
+			if( element.attribute( REPEATED ).length() != 0 )
 			{
 				musicRepeated = element.attribute( REPEATED ) == "yes";
 			}
@@ -744,7 +744,7 @@ package remx
 
 			soundRepeated = false;
 
-			if( element.attribute( REPEATED ).hasSimpleContent() )
+			if( element.attribute( REPEATED ).length() != 0 )
 			{
 				soundRepeated = element.attribute( REPEATED ) == "yes";
 			}
@@ -798,7 +798,7 @@ package remx
 
 			spriteFPS = 0.0;
 
-			if( element.attribute( FRAMERATE ).hasSimpleContent() )
+			if( element.attribute( FRAMERATE ).length() != 0 )
 			{
 				spriteFPS = element.attribute( FRAMERATE );
 
@@ -970,7 +970,7 @@ package remx
 
 				frameFlags = 0;
 
-				if( element.attribute( FLAGS ).hasSimpleContent() )
+				if( element.attribute( FLAGS ).length() != 0 )
 				{
 					frameFlags = element.attribute( FLAGS );
 				}
@@ -1065,7 +1065,7 @@ package remx
 					throw new Exception( ERR_ATTRIBUTE_OUT_OF_RANGE, STATE, Y, MIN_PX, MAX_PX );
 				}
 
-				if( element.attribute( SOUND ).hasSimpleContent() )
+				if( element.attribute( SOUND ).length() != 0 )
 				{
 					frameSound = element.attribute( SOUND );
 

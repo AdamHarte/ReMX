@@ -1,0 +1,29 @@
+<!-- Defines a resource package.                                             -->
+<!-- The name of the SWF file used by this resource package MUST match the   -->
+<!-- name of this XML file. For example, demo.xml must have a demo.swf file. -->
+<resource>
+
+	<!-- NOTE                                                               -->
+	<!-- Images within the SWF library MUST have and width and height which -->
+	<!-- are a power of two. The following values are allowed:              -->
+	<!-- 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024                           -->
+	<!-- However, the image can be rectangular, so the width could be 512   -->
+	<!-- and the height could be 256, or vise versa.                        -->
+
+
+	<!-- Defines a sprite graphic.                                           -->
+	<!-- id     = A unique identifier for this sprite.            [required] -->
+	<!-- source = The class name of the image in the SWF library. [required] -->
+	<!-- width  = The nominal width of this sprite, in pixels.    [required] -->
+	<!-- height = The nominal height of this sprite, in pixels.   [required] -->
+	<sprite id="demoSprite" source="robo.png" width="32" height="32">
+		<!-- At least one frameset element must be created for each sprite. -->
+		<frameset>
+			<!-- At least one frame element must be created for each frameset.                   -->
+			<!-- x = The position of this frame within the 'source' image, in pixels. [required] -->
+			<!-- y = The position of this frame within the 'source' image, in pixels. [required] -->
+			<frame x="0" y="0"/>
+		</frameset>
+	</sprite>
+
+</resource>

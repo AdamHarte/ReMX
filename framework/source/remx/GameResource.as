@@ -13,9 +13,9 @@ package remx
 		//
 		//------------------------------------------------------------------------------------------
 
-		public var onLoadStart:Function    = null; // ( resourceID:String ):void
-		public var onLoadComplete:Function = null; // ( resourceID:String ):void
-		public var onLoadProgress:Function = null; // ( resourceID:String, progress:Number ):void
+		public var onLoadStart:Function    = null; // ( packageID:String ):void
+		public var onLoadComplete:Function = null; // ( packageID:String ):void
+		public var onLoadProgress:Function = null; // ( packageID:String, progress:Number ):void
 
 		//------------------------------------------------------------------------------------------
 		//
@@ -66,9 +66,9 @@ package remx
 
 		/**
 		 */
-		public function load( resourceID:String ):Boolean
+		public function load( packageID:String ):Boolean
 		{
-			if( resources[resourceID] != null )
+			if( resources[packageID] != null )
 			{
 				return false;
 			}
@@ -77,22 +77,22 @@ package remx
 
 			for each( resource in queue )
 			{
-				if( resource.id == resourceID )
+				if( resource.id == packageID )
 				{
 					return false;
 				}
 			}
 
-			var resourcePath:String = game.config.resourcePaths[resourceID];
+			var descriptorPath:String = game.config.descriptorPaths[packageID];
 
-			if( resourcePath == null )
+			if( descriptorPath == null )
 			{
-				throw new Exception( ERR_RESOURCE_NOT_FOUND, resourceID );
+				throw new Exception( ERR_RESOURCE_NOT_FOUND, packageID );
 			}
 
 			resource      = new ResourcePackage();
-			resource.id   = resourceID;
-			resource.path = resourcePath;
+			resource.id   = packageID;
+			resource.path = descriptorPath;
 
 			if( queue.push( resource ) == 1 )
 			{
@@ -104,9 +104,9 @@ package remx
 
 		/**
 		 */
-		public function unload( resourceID:String ):Boolean
+		public function unload( packageID:String ):Boolean
 		{
-			var resource:ResourcePackage = resources[resourceID];
+			var resource:ResourcePackage = resources[packageID];
 
 			if( resource != null )
 			{
@@ -126,7 +126,7 @@ package remx
 				}
 
 				resource.dispose();
-				delete resources[resourceID];
+				delete resources[packageID];
 				return true;
 			}
 
@@ -135,7 +135,7 @@ package remx
 
 			while( i < n )
 			{
-				if( queue[i].id == resourceID )
+				if( queue[i].id == packageID )
 				{
 					queue.splice( i, 1 );
 					return true;
@@ -378,31 +378,31 @@ package remx
 
 		/**
 		 */
-		private function broadcastLoadStart( resourceID:String ):void
+		private function broadcastLoadStart( packageID:String ):void
 		{
 			if( onLoadStart != null )
 			{
-				onLoadStart( resourceID );
+				onLoadStart( packageID );
 			}
 		}
 
 		/**
 		 */
-		private function broadcastLoadComplete( resourceID:String ):void
+		private function broadcastLoadComplete( packageID:String ):void
 		{
 			if( onLoadComplete != null )
 			{
-				onLoadComplete( resourceID );
+				onLoadComplete( packageID );
 			}
 		}
 
 		/**
 		 */
-		private function broadcastLoadProgress( resourceID:String, progress:Number ):void
+		private function broadcastLoadProgress( packageID:String, progress:Number ):void
 		{
 			if( onLoadProgress != null )
 			{
-				onLoadProgress( resourceID, progress );
+				onLoadProgress( packageID, progress );
 			}
 		}
 

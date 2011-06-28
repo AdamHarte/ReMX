@@ -1,0 +1,38 @@
+<!-- Defines a resource package.                                             -->
+<!-- The name of the SWF file used by this resource package MUST match the   -->
+<!-- name of this XML file. For example, demo.xml must have a demo.swf file. -->
+<resource>
+
+	<!-- NOTE                                                               -->
+	<!-- Images within the SWF library MUST have and width and height which -->
+	<!-- are a power of two. The following values are allowed:              -->
+	<!-- 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024                           -->
+	<!-- However, the image can be rectangular, so the width could be 512   -->
+	<!-- and the height could be 256, or vise versa.                        -->
+
+
+	<!-- Defines a widget (an interactive graphic).                             -->
+	<!-- id        = A unique identifier for this widget.            [required] -->
+	<!-- source    = The class name of the image in the SWF library. [required] -->
+	<!-- width     = The nominal width of this widget, in pixels.    [required] -->
+	<!-- height    = The nominal height of this widget, in pixels.   [required] -->
+	<widget id="roboButton" source="button.png" width="256" height="64">
+		<!-- At least one state element must be created for each widget. -->
+		<!-- Each state respresents a visual state for the widget.       -->
+
+		<!-- The first is the "default" state. -->
+		<!-- x = The position of this state within the 'source' image, in pixels. [required] -->
+		<!-- y = The position of this state within the 'source' image, in pixels. [required] -->
+		<state x="0"  y="0"/>
+
+		<!-- The second is the "hover" state. -->
+		<state x="0"  y="64"/>
+
+		<!-- The third is the "pressed" state. -->
+		<state x="0"  y="128"/>
+
+		<!-- The fourth is the "disabled" state. -->
+		<state x="0"  y="192"/>
+	</widget>
+
+</resource>

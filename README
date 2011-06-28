@@ -12,6 +12,6 @@ gamepads on mobile devices, the native AS3 display list is not used, all game
 graphics are pushed to the GPU using Molehill.
 
 For more information and documention, see the wiki:
-https://github.com/RetroModular/ReMX/wiki
+https://github.com/RetroModular/ReMX/wiki/Introduction
 
 --------------------------------------------------------------------------------
