@@ -190,6 +190,7 @@ package remx
 
 				if( NativeWindow.isSupported )
 				{
+					// Limit the frame rate to 60 for desktop games.
 					if( config.gameFrameRate > 60 )
 					{
 						stage.frameRate = 60;
@@ -209,6 +210,7 @@ package remx
 				}
 				else
 				{
+					// Limit the frame rate to 40 for mobile games.
 					if( config.gameFrameRate > 40 )
 					{
 						stage.frameRate = 40;
@@ -235,6 +237,7 @@ package remx
 
 			RUNTIME::FLASH
 			{
+				// Limit the frame rate to 60 for browser games.
 				if( config.gameFrameRate > 60 )
 				{
 					stage.frameRate = 60;
@@ -254,6 +257,7 @@ package remx
 
 			try
 			{
+				// These will replace the current 'viewport' property.
 				Object(surface).x = 0.0;
 				Object(surface).y = 0.0;
 				Object(surface).visible = true;
@@ -354,6 +358,7 @@ package remx
 
 				try
 				{
+					// This is not supported on mobile devices.
 					NativeApplication.nativeApplication.exit();
 				}
 				catch( error:Error )
@@ -409,6 +414,8 @@ package remx
 
 			var activeScreen:GameScreen = screen;
 
+			// This needs to be in a try/catch statement because the game could be
+			// shutdown at any point during the update.
 			try
 			{
 				audio   .update();
@@ -422,6 +429,7 @@ package remx
 
 				if( screen != null )
 				{
+					// Only update the screen if it was not replaced during a system update.
 					if( screen == activeScreen )
 					{
 						screen.update();
@@ -434,6 +442,7 @@ package remx
 			}
 			catch( error:Error )
 			{
+				// Only throw the error if the game was not shutdown during the update.
 				if( initialized )
 				{
 					throw error;

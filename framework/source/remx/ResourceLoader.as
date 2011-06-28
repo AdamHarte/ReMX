@@ -605,7 +605,7 @@ package remx
 			fontTracking = 0.0;
 			fontLeading  = 0.0;
 
-			if( element.hasOwnProperty( TRACKING ) )
+			if( element.attribute( TRACKING ).hasSimpleContent() )
 			{
 				fontTracking = element.attribute( TRACKING );
 
@@ -615,7 +615,7 @@ package remx
 				}
 			}
 
-			if( element.hasOwnProperty( LEADING ) )
+			if( element.attribute( LEADING ).hasSimpleContent() )
 			{
 				fontLeading = element.attribute( LEADING );
 
@@ -647,9 +647,9 @@ package remx
 
 			for each( var frameElement:XML in frameElements )
 			{
-				var frameX:Number;  // required
-				var frameY:Number;  // required
-				var frameCode:uint; // required
+				var frameX:Number; // required
+				var frameY:Number; // required
+				var frameCode:int; // required
 
 				hasRequiredAttributes( frameElement, X, Y, CODE );
 
@@ -707,7 +707,7 @@ package remx
 			musicVolume   = 1.0;
 			musicRepeated = false;
 
-			if( element.hasOwnProperty( VOLUME ) )
+			if( element.attribute( VOLUME ).hasSimpleContent() )
 			{
 				musicVolume = element.attribute( VOLUME );
 
@@ -717,7 +717,7 @@ package remx
 				}
 			}
 
-			if( element.hasOwnProperty( REPEATED ) )
+			if( element.attribute( REPEATED ).hasSimpleContent() )
 			{
 				musicRepeated = element.attribute( REPEATED ) == "yes";
 			}
@@ -759,7 +759,7 @@ package remx
 			soundVolume   = 1.0;
 			soundRepeated = false;
 
-			if( element.hasOwnProperty( VOLUME ) )
+			if( element.attribute( VOLUME ).hasSimpleContent() )
 			{
 				soundVolume = element.attribute( VOLUME );
 
@@ -769,7 +769,7 @@ package remx
 				}
 			}
 
-			if( element.hasOwnProperty( REPEATED ) )
+			if( element.attribute( REPEATED ).hasSimpleContent() )
 			{
 				soundRepeated = element.attribute( REPEATED ) == "yes";
 			}
@@ -861,12 +861,12 @@ package remx
 				framesetAnimated = spriteFPS != 0.0;
 				framesetRepeated = spriteFPS != 0.0;
 
-				if( framesetElement.hasOwnProperty( ANIMATED ) )
+				if( framesetElement.( ANIMATED ) )
 				{
 					framesetAnimated = String(framesetElement.attribute( ANIMATED )) != "no";
 				}
 
-				if( framesetElement.hasOwnProperty( REPEATED ) )
+				if( framesetElement.( REPEATED ) )
 				{
 					framesetRepeated = String(framesetElement.attribute( REPEATED )) != "no";
 				}
@@ -1091,7 +1091,7 @@ package remx
 					throw new Exception( ERR_ATTRIBUTE_OUT_OF_RANGE, STATE, Y, MIN_PX, MAX_PX );
 				}
 
-				if( element.hasOwnProperty( SOUND ) )
+				if( element.attribute( SOUND ).hasSimpleContent() )
 				{
 					frameSound = element.attribute( SOUND );
 

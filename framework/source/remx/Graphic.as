@@ -26,6 +26,7 @@ package remx
 
 		internal var graphicRX:GraphicRX = null;
 
+		internal var clipped:Boolean     = false;
 		internal var interactive:Boolean = false;
 
 		//------------------------------------------------------------------------------------------

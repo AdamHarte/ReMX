@@ -12,6 +12,7 @@ package remx
 	import flash.display3D.Program3D;
 	import flash.display3D.VertexBuffer3D;
 	import flash.display3D.textures.Texture;
+	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 
@@ -89,6 +90,11 @@ package remx
 		private var currentUIGraphic:Graphic = null;
 		private var pendingUIGraphic:Graphic = null;
 
+		private var drawTrianglesCount:int = 0;
+
+		private var clipRect:Rectangle    = new Rectangle();
+		private var usingClipRect:Boolean = false;
+
 		//------------------------------------------------------------------------------------------
 		//
 		// CONSTRUCTOR
@@ -110,6 +116,16 @@ package remx
 		 */
 		public function draw( graphic:Graphic, absolute:Boolean=false ):void
 		{
+			if( cameraX < 0.0 )
+			{
+				cameraX = 0.0;
+			}
+
+			if( cameraY < 0.0 )
+			{
+				cameraY = 0.0;
+			}
+
 			if( graphic.graphicRX == null )
 			{
 				return;
@@ -126,25 +142,54 @@ package remx
 				}
 			}
 
+			if( graphic.width < 0.0 || graphic.height < 0.0 )
+			{
+				return;
+			}
+
+			if( graphic.clipped )
+			{
+				clipRect.x      = graphic.x;
+				clipRect.y      = graphic.y;
+				clipRect.width  = graphic.width;
+				clipRect.height = graphic.height;
+
+				usingClipRect = true;
+				game.context.setScissorRectangle( clipRect );
+			}
+			else if( usingClipRect )
+			{
+				usingClipRect = false;
+				game.context.setScissorRectangle( null );
+			}
+
 			var x:Number;
 			var y:Number;
 			var r:Number;
 			var b:Number;
 
-			x = graphic.x - ( absolute ? 0.0 : cameraX * graphic.cameraScalerX );
-			y = graphic.y - ( absolute ? 0.0 : cameraY * graphic.cameraScalerY );
-
-			if( x > game.width || y > game.height )
+			if( graphic.clipped )
 			{
-				return;
+				x = cameraX * graphic.cameraScalerX;
+				y = cameraY * graphic.cameraScalerY;
 			}
-
-			r = x + graphic.width;
-			b = y + graphic.height;
-
-			if( r < 0.0 || b < 0.0 )
+			else
 			{
-				return;
+				x = graphic.x - ( absolute ? 0.0 : cameraX * graphic.cameraScalerX );
+				y = graphic.y - ( absolute ? 0.0 : cameraY * graphic.cameraScalerY );
+
+				if( x > game.width || y > game.height )
+				{
+					return;
+				}
+
+				r = x + graphic.width;
+				b = y + graphic.height;
+
+				if( r < 0.0 || b < 0.0 )
+				{
+					return;
+				}
 			}
 
 			if( graphic.interactive )
@@ -187,6 +232,8 @@ package remx
 		internal override function update():void
 		{
 			game.context.clear();
+
+			drawTrianglesCount = 0;
 
 			if( pendingUIGraphic == null )
 			{
@@ -346,6 +393,11 @@ package remx
 
 			graphicMesh.reset();
 			graphicImage = null;
+
+			if( ++drawTrianglesCount == 65 )
+			{
+				throw new Exception( "The number of graphic meshes rendered during this frame has exceeded 64" );
+			}
 		}
 
 	}// EOC
