@@ -73,7 +73,7 @@ package
 		 */
 		protected override function onUpdate():void
 		{
-			// Increase the camera's x and y positions.
+			// Increase the camera's x position.
 			// More information about the camera will be provided at a later date.
 			game.graphics.cameraX += 1;
 		}
