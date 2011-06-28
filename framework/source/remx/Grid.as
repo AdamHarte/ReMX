@@ -75,8 +75,8 @@ package remx
 			var mi:int;
 			var mn:int = data.tilemap.length;
 
-			var gc:int = 1 + ( width  / tilesetRX.frameWidth  >> 0 );
-			var gr:int = 1 + ( height / tilesetRX.frameHeight >> 0 );
+			var gc:int = 2 + ( width  / tilesetRX.frameWidth  >> 0 );
+			var gr:int = 2 + ( height / tilesetRX.frameHeight >> 0 );
 			var gx:int;
 			var gy:int = 0;
 

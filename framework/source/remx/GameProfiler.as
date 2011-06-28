@@ -50,8 +50,9 @@ package remx
 		private var graphics:BitmapData   = null;
 
 		private var updateCount:Number    = 0.0;
-		private var fps:Number            = 0.0;
+		private var fpsCount:Number       = 0.0;
 		private var fpsTotal:Number       = 0.0;
+		private var frameCount:Number     = 0.0;
 		private var frameTime:Number      = 0.0;
 		private var frameTimeTotal:Number = 0.0;
 		private var peakMemory:Number     = 0.0;
@@ -137,10 +138,8 @@ package remx
 		 */
 		internal override function update():void
 		{
-			updateCount++;
-
-			fps = game.config.gameFrameRate * game.timeDelta;
-			fpsTotal += fps;
+			fpsCount++;
+			frameCount++;
 		}
 
 		/**
@@ -168,6 +167,8 @@ package remx
 		 */
 		private function updateStats():void
 		{
+			updateCount++;
+
 			bitmapData.fillRect( bitmapRect, BACKGROUND );
 
 			draw(  10.0, 10.0, textBlocks[FRAME_RATE]     );
@@ -182,13 +183,15 @@ package remx
 				peakMemory = memory;
 			}
 
-			var count:Number = updateCount - 1.0;
+			fpsTotal += fpsCount;
 
-			drawDigits2( 80.0, 10.0, Math.round( fps ), true );
-			drawDigits2( 55.0, 22.0, Math.round( fpsTotal / count ) );
+			drawDigits2( 80.0, 10.0, Math.round( fpsCount ), true );
+			drawDigits2( 55.0, 22.0, Math.round( fpsTotal / updateCount ) );
+
+			fpsCount = 0.0;
 
 			drawDigits2( 180.0, 10.0, Math.round( frameTime ), true );
-			drawDigits2( 158.0, 22.0, Math.round( frameTimeTotal / count ) );
+			drawDigits2( 158.0, 22.0, Math.round( frameTimeTotal / frameCount ) );
 
 			drawDigits3( 260.0, 10.0, memory, true );
 			drawDigits3( 240.0, 22.0, peakMemory );
