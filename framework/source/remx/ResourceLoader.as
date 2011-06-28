@@ -574,7 +574,7 @@ package remx
 			var fontTracking:Number; // optional - default 0.0
 			var fontLeading:Number;  // optional - default 0.0
 
-			hasRequiredAttributes( element, ID, SOURCE, X, Y, WIDTH, HEIGHT );
+			hasRequiredAttributes( element, ID, SOURCE, WIDTH, HEIGHT );
 
 			fontID     = element.attribute( ID );
 			fontSource = element.attribute( SOURCE );

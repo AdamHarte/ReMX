@@ -1,0 +1,43 @@
+<!-- Defines a resource package.                                             -->
+<!-- The name of the SWF file used by this resource package MUST match the   -->
+<!-- name of this XML file. For example, demo.xml must have a demo.swf file. -->
+<resource>
+
+	<!-- NOTE                                                               -->
+	<!-- Images within the SWF library MUST have and width and height which -->
+	<!-- are a power of two. The following values are allowed:              -->
+	<!-- 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024                           -->
+	<!-- However, the image can be rectangular, so the width could be 512   -->
+	<!-- and the height could be 256, or vise versa.                        -->
+
+	<!-- Defines a font for use with a text graphic.                               -->
+	<!-- id        = A unique identifier for this font.                 [required] -->
+	<!-- source    = The class name of the image in the SWF library.    [required] -->
+	<!-- width     = The nominal width of one character, in pixels.     [required] -->
+	<!-- height    = The nominal height of one character, in pixels.    [required] -->
+	<!-- tracking  = The number of pixels to add between each character.           -->
+	<!-- leading   = The number of pixels to add between each line.                -->
+	<font id="chunky" source="chars.png" width="16" height="16" tracking="2" leading="4">
+		<!-- At least one char element must be created for each font. -->
+		<!-- x    = The position of this character within the 'source' image, in pixels. [required] -->
+		<!-- y    = The position of this character within the 'source' image, in pixels. [required] -->
+		<!-- char = The character code. [required] -->
+		<char x="0"   y="0" code="65"/>
+		<char x="16"  y="0" code="66"/>
+		<char x="32"  y="0" code="67"/>
+		<char x="48"  y="0" code="68"/>
+		<char x="64"  y="0" code="69"/>
+		<char x="80"  y="0" code="70"/>
+		<char x="96"  y="0" code="71"/>
+		<char x="112" y="0" code="72"/>
+		<char x="128" y="0" code="73"/>
+		<char x="144" y="0" code="74"/>
+		<char x="160" y="0" code="75"/>
+		<char x="176" y="0" code="76"/>
+		<char x="192" y="0" code="77"/>
+		<char x="208" y="0" code="78"/>
+		<char x="224" y="0" code="79"/>
+		<char x="240" y="0" code="80"/>
+	</font>
+
+</resource>
