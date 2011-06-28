@@ -686,7 +686,6 @@ package remx
 		{
 			var musicID:String;        // required
 			var musicSource:String;    // required
-			var musicVolume:Number;    // optional - default 1.0
 			var musicRepeated:Boolean; // optional - default false
 
 			hasRequiredAttributes( element, ID, SOURCE );
@@ -704,18 +703,7 @@ package remx
 				throw new Exception( ERR_ATTRIBUTE_EMPTY, MUSIC, SOURCE );
 			}
 
-			musicVolume   = 1.0;
 			musicRepeated = false;
-
-			if( element.attribute( VOLUME ).hasSimpleContent() )
-			{
-				musicVolume = element.attribute( VOLUME );
-
-				if( isWithinRange( musicVolume, 0.0, 1.0 ) == false )
-				{
-					throw new Exception( ERR_ATTRIBUTE_OUT_OF_RANGE, MUSIC, VOLUME, 0.0, 1.0 );
-				}
-			}
 
 			if( element.attribute( REPEATED ).hasSimpleContent() )
 			{
@@ -726,7 +714,6 @@ package remx
 
 			music.id       = musicID;
 			music.path     = getFilePath( musicSource );
-			music.volume   = musicVolume;
 			music.repeated = musicRepeated;
 
 			resource.music[musicID] = music;
@@ -738,7 +725,6 @@ package remx
 		{
 			var soundID:String;        // required
 			var soundSource:String;    // required
-			var soundVolume:Number;    // optional - default 1.0
 			var soundRepeated:Boolean; // optional - default false
 
 			hasRequiredAttributes( element, ID, SOURCE );
@@ -756,18 +742,7 @@ package remx
 				throw new Exception( ERR_ATTRIBUTE_EMPTY, SOUND, SOURCE );
 			}
 
-			soundVolume   = 1.0;
 			soundRepeated = false;
-
-			if( element.attribute( VOLUME ).hasSimpleContent() )
-			{
-				soundVolume = element.attribute( VOLUME );
-
-				if( isWithinRange( soundVolume, 0.0, 1.0 ) == false )
-				{
-					throw new Exception( ERR_ATTRIBUTE_OUT_OF_RANGE, MUSIC, VOLUME, 0.0, 1.0 );
-				}
-			}
 
 			if( element.attribute( REPEATED ).hasSimpleContent() )
 			{
@@ -778,7 +753,6 @@ package remx
 
 			sound.id       = soundID;
 			sound.source   = getSoundAsset( soundSource );
-			sound.volume   = soundVolume;
 			sound.repeated = soundRepeated;
 
 			resource.sounds[soundID] = sound;

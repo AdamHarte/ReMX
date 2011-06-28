@@ -1,8 +1,11 @@
 package remx
 {
+	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
+	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 
 	/**
@@ -18,23 +21,16 @@ package remx
 		public var masterSoundVolume:Number = 1.0;
 		public var masterMusicVolume:Number = 1.0;
 
-		public var musicXFadeTime:Number = 0.0;
-
-		//------------------------------------------------------------------------------------------
-		//
-		// PUBLIC PROPERTIES - EVENTS
-		//
-		//------------------------------------------------------------------------------------------
-
-		public var onMusicStart:Function    = null; // ( musicID:String ):void
-		public var onMusicComplete:Function = null; // ( musicID:String ):void
-		public var onMusicProgress:Function = null; // ( musicID:String, progress:Number ):void
+		public var musicFadeTime:Number = 2.0;
 
 		//------------------------------------------------------------------------------------------
 		//
 		// PRIVATE PROPERTIES
 		//
 		//------------------------------------------------------------------------------------------
+
+		private const ERR_RESOURCE_NOT_FOUND:String =
+			"%1 resource '%2' does not exist";
 
 		private var game:GameApp = null;
 
@@ -45,8 +41,12 @@ package remx
 		private var channels:Dictionary = new Dictionary();
 
 		private var musicRX:MusicRX           = null;
+		private var musicRX2:MusicRX          = null;
 		private var musicPlayer:Sound         = null;
 		private var musicChannel:SoundChannel = null;
+		private var musicFading:Boolean       = false;
+		private var musicFadeStep:Number      = 0.0;
+		private var musicFadeVolume:Number    = 0.0;
 
 		private var transform:SoundTransform = new SoundTransform();
 
@@ -75,7 +75,7 @@ package remx
 
 			if( sound == null )
 			{
-				throw new Exception( "Sound resource '%1' does not exist", soundID );
+				throw new Exception( ERR_RESOURCE_NOT_FOUND, "Sound", soundID );
 			}
 
 			transform.volume = volume * masterSoundVolume;
@@ -88,7 +88,6 @@ package remx
 			}
 
 			sound.source.play( 0.0, 0, transform );
-
 			return 0;
 		}
 
@@ -109,7 +108,18 @@ package remx
 
 		/**
 		 */
-		public function updateSound( channelID:uint, volume:Number, balance:Number ):void
+		public function stopSounds():void
+		{
+			for( var id:* in channels )
+			{
+				SoundChannel(channels[id]).stop();
+				delete channels[id];
+			}
+		}
+
+		/**
+		 */
+		public function setSoundVolume( channelID:uint, volume:Number ):void
 		{
 			var channel:SoundChannel = channels[channelID];
 
@@ -118,17 +128,25 @@ package remx
 				return;
 			}
 
-			transform = channel.soundTransform;
+			transform        = channel.soundTransform;
+			transform.volume = volume * masterSoundVolume;
 
-			if( isNaN(volume) == false )
+			channel.soundTransform = transform;
+		}
+
+		/**
+		 */
+		public function setSoundBalance( channelID:uint, balance:Number ):void
+		{
+			var channel:SoundChannel = channels[channelID];
+
+			if( channel == null )
 			{
-				transform.volume = volume * masterSoundVolume;
+				return;
 			}
 
-			if( isNaN(balance) == false )
-			{
-				transform.pan = balance;
-			}
+			transform     = channel.soundTransform;
+			transform.pan = balance;
 
 			channel.soundTransform = transform;
 		}
@@ -136,12 +154,59 @@ package remx
 		/**
 		 */
 		public function playMusic( musicID:String ):void
-		{}
+		{
+			var music:MusicRX = musicRegister[musicID];
+
+			if( music == null )
+			{
+				throw new Exception( ERR_RESOURCE_NOT_FOUND, "Music", musicID );
+			}
+
+			stopMusic();
+
+			if( musicFading )
+			{
+				musicRX2 = music;
+				return;
+			}
+
+			musicRX = music;
+			startMusic();
+		}
 
 		/**
 		 */
 		public function stopMusic():void
-		{}
+		{
+			musicRX2 = null;
+
+			if( musicRX == null || musicFading )
+			{
+				return;
+			}
+
+			if( musicFadeTime > 0.0 )
+			{
+				musicFadeVolume = musicChannel.soundTransform.volume;
+				musicFadeStep   = musicFadeVolume / ( musicFadeTime * game.config.gameFrameRate );
+				musicFading     = true;
+				return;
+			}
+
+			musicChannel.removeEventListener( Event.SOUND_COMPLETE, onMusicComplete );
+			musicChannel.stop();
+
+			try
+			{
+				musicPlayer.removeEventListener( IOErrorEvent.IO_ERROR, onMusicIOError );
+				musicPlayer.close();
+			}
+			catch( error:Error )
+			{}
+
+			musicRX     = null;
+			musicPlayer = null;
+		}
 
 		//------------------------------------------------------------------------------------------
 		//
@@ -158,11 +223,40 @@ package remx
 
 		/**
 		 */
-		internal override function reset():void
+		internal override function update():void
 		{
-			onMusicStart    = null;
-			onMusicComplete = null;
-			onMusicProgress = null;
+			if( musicFading == false )
+			{
+				return;
+			}
+
+			musicFadeVolume -= musicFadeStep * game.timeDelta;
+
+			if( musicFadeVolume > 0.0 )
+			{
+				transform.volume = musicFadeVolume;
+				transform.pan    = 0.0;
+				musicChannel.soundTransform = transform;
+				return
+			}
+
+			musicChannel.removeEventListener( Event.SOUND_COMPLETE, onMusicComplete );
+			musicChannel.stop();
+
+			try
+			{
+				musicPlayer.removeEventListener( IOErrorEvent.IO_ERROR, onMusicIOError );
+				musicPlayer.close();
+			}
+			catch( error:Error )
+			{}
+
+			musicRX     = musicRX2;
+			musicRX2    = null;
+			musicPlayer = null;
+			musicFading = false;
+
+			startMusic();
 		}
 
 		/**
@@ -195,38 +289,73 @@ package remx
 
 		//------------------------------------------------------------------------------------------
 		//
-		// PRIVATE METHODS - BROADCASTERS
+		// PRIVATE METHODS
 		//
 		//------------------------------------------------------------------------------------------
 
 		/**
 		 */
-		private function broadcastMusicStart( musicID:String ):void
+		private function startMusic():void
 		{
-			if( onMusicStart != null )
+			if( musicRX == null )
 			{
-				onMusicStart( musicID );
+				return;
 			}
+
+			musicPlayer = new Sound();
+			musicPlayer.addEventListener( IOErrorEvent.IO_ERROR, onMusicIOError );
+
+			try
+			{
+				musicPlayer.load( new URLRequest( musicRX.path ) );
+			}
+			catch( error:Error )
+			{
+				throw new Exception( error.message );
+			}
+
+			transform.volume = masterMusicVolume;
+			transform.pan    = 0.0;
+
+			musicChannel = musicPlayer.play( 0.0, 0, transform );
+			musicChannel.addEventListener( Event.SOUND_COMPLETE, onMusicComplete );
+		}
+
+		//------------------------------------------------------------------------------------------
+		//
+		// PRIVATE METHODS - NATIVE EVENT LISTENERS
+		//
+		//------------------------------------------------------------------------------------------
+
+		/**
+		 */
+		private function onMusicComplete( event:Event ):void
+		{
+			musicChannel.removeEventListener( Event.SOUND_COMPLETE, onMusicComplete );
+
+			try
+			{
+				musicPlayer.removeEventListener( IOErrorEvent.IO_ERROR, onMusicIOError );
+				musicPlayer.close();
+			}
+			catch( error:Error )
+			{}
+
+			if( musicRX.repeated )
+			{
+				startMusic();
+				return;
+			}
+
+			musicRX     = null;
+			musicPlayer = null;
 		}
 
 		/**
 		 */
-		private function broadcastMusicComplete( musicID:String ):void
+		private function onMusicIOError( event:IOErrorEvent ):void
 		{
-			if( onMusicComplete != null )
-			{
-				onMusicComplete( musicID );
-			}
-		}
-
-		/**
-		 */
-		private function broadcastMusicProgress( musicID:String, progress:Number ):void
-		{
-			if( onMusicProgress != null )
-			{
-				onMusicProgress( musicID, progress );
-			}
+			throw new Exception( event.text );
 		}
 
 	}// EOC

@@ -193,7 +193,8 @@ package remx
 					// Limit the frame rate to 60 for desktop games.
 					if( config.gameFrameRate > 60 )
 					{
-						stage.frameRate = 60;
+						stage.frameRate      = 60;
+						config.gameFrameRate = 60;
 					}
 					else
 					{
@@ -213,7 +214,8 @@ package remx
 					// Limit the frame rate to 40 for mobile games.
 					if( config.gameFrameRate > 40 )
 					{
-						stage.frameRate = 40;
+						stage.frameRate      = 40;
+						config.gameFrameRate = 40;
 					}
 					else
 					{
@@ -240,7 +242,8 @@ package remx
 				// Limit the frame rate to 60 for browser games.
 				if( config.gameFrameRate > 60 )
 				{
-					stage.frameRate = 60;
+					stage.frameRate      = 60;
+					config.gameFrameRate = 60;
 				}
 				else
 				{

@@ -12,9 +12,7 @@ package remx
 		//
 		//------------------------------------------------------------------------------------------
 
-		public var source:Sound = null;
-
-		public var volume:Number    = 0.0;
+		public var source:Sound     = null;
 		public var repeated:Boolean = false;
 
 		//------------------------------------------------------------------------------------------

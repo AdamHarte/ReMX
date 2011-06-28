@@ -1,0 +1,17 @@
+--------------------------------------------------------------------------------
+
+ReMX Framework
+Copyright (c) 2011, RetroModular. All rights reserved.
+
+--------------------------------------------------------------------------------
+
+ReMX is a 2D arcade game framework that uses the ActionScript 3.0 (AS3) Stage3D
+API (Molehill) for GPU accelerated graphics rendering. With the exception of the
+main document class and a few GUI elements used for game profiling and virtual
+gamepads on mobile devices, the native AS3 display list is not used, all game
+graphics are pushed to the GPU using Molehill.
+
+For more information and documention, see the wiki:
+https://github.com/RetroModular/ReMX/wiki
+
+--------------------------------------------------------------------------------
