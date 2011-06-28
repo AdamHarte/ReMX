@@ -95,6 +95,10 @@ package remx
 		private var clipRect:Rectangle    = new Rectangle();
 		private var usingClipRect:Boolean = false;
 
+		private var backgroundR:Number = 0.0;
+		private var backgroundG:Number = 0.0;
+		private var backgroundB:Number = 0.0;
+
 		//------------------------------------------------------------------------------------------
 		//
 		// CONSTRUCTOR
@@ -224,6 +228,10 @@ package remx
 			projectionMatrix[0] =  2.0 / game.width;
 			projectionMatrix[5] = -2.0 / game.height;
 
+			backgroundR = ( 1.0 / 255.0 ) * ( game.config.gameBackground >> 16 & 255 );
+			backgroundG = ( 1.0 / 255.0 ) * ( game.config.gameBackground >>  8 & 255 );
+			backgroundB = ( 1.0 / 255.0 ) * ( game.config.gameBackground >>  0 & 255 );
+
 			reboot();
 		}
 
@@ -231,7 +239,7 @@ package remx
 		 */
 		internal override function update():void
 		{
-			game.context.clear();
+			game.context.clear( backgroundR, backgroundG, backgroundB );
 
 			drawTrianglesCount = 0;
 

@@ -131,10 +131,14 @@ package remx
 				controls.reset();
 				graphics.reset();
 				network .reset();
-				profiler.reset();
 				resource.reset();
 				server  .reset();
 				storage .reset();
+
+				if( config.profile )
+				{
+					profiler.reset();
+				}
 
 				screen = null;
 			}
@@ -308,10 +312,14 @@ package remx
 			controls.initialize( this );
 			graphics.initialize( this );
 			network .initialize( this );
-			profiler.initialize( this );
 			resource.initialize( this );
 			server  .initialize( this );
 			storage .initialize( this );
+
+			if( config.profile )
+			{
+				profiler.initialize( this );
+			}
 
 			initialized = true;
 
@@ -342,6 +350,11 @@ package remx
 				resource.shutdown();
 				server  .shutdown();
 				storage .shutdown();
+
+				if( config.profile )
+				{
+					profiler.shutdown();
+				}
 
 				audio    = null;
 				controls = null;
@@ -415,6 +428,11 @@ package remx
 				timeStamp  = time;
 			}
 
+			if( config.profile )
+			{
+				profiler.startPass( getTimer() );
+			}
+
 			var activeScreen:GameScreen = screen;
 
 			// This needs to be in a try/catch statement because the game could be
@@ -425,10 +443,14 @@ package remx
 				controls.update();
 				graphics.update();
 				network .update();
-				profiler.update();
 				resource.update();
 				server  .update();
 				storage .update();
+
+				if( config.profile )
+				{
+					profiler.update();
+				}
 
 				if( screen != null )
 				{
@@ -450,6 +472,11 @@ package remx
 				{
 					throw error;
 				}
+			}
+
+			if( config.profile )
+			{
+				profiler.endPass( getTimer() );
 			}
 		}
 

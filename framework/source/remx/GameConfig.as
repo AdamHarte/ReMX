@@ -13,10 +13,11 @@ package remx
 		//
 		//------------------------------------------------------------------------------------------
 
-		public var gameUID:uint       = 0;
-		public var gameWidth:uint     = 0;
-		public var gameHeight:uint    = 0;
-		public var gameFrameRate:uint = 40;
+		public var gameUID:uint        = 0;
+		public var gameWidth:uint      = 0;
+		public var gameHeight:uint     = 0;
+		public var gameFrameRate:uint  = 40;
+		public var gameBackground:uint = 0x000000;
 
 		public var debug:Boolean   = Capabilities.isDebugger;
 		public var profile:Boolean = false;
